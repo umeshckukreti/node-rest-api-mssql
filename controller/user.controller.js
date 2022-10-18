@@ -15,10 +15,20 @@ class UserController {
       .then((response) => {
         // handle reuest res for error and success
         console.log("response", response);
-        res.send({ message: "login success", data: response.recordset });
+        if (res.reqSuccess) {
+          res
+            .status(200)
+            .send({
+              message: "User login successfully",
+              data: response.data.recordset,
+            });
+        } else {
+          res.status(400).send({ message: "Request Error", data: response });
+        }
       })
       .catch((error) => {
         // handle internal server error
+        res.status(500).send("Internal server error");
         console.log("db connection error", err);
       });
   }
